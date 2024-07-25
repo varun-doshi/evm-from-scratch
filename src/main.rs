@@ -108,13 +108,15 @@ mod tests {
 
     #[test]
     fn test_evm() {
-        let calldata = hex::encode(vec![60, 5]);
+        let calldata = hex::encode(vec![60, 5, 60, 4, 01]);
 
         let code = hex::decode(calldata).unwrap();
         println!("code:{:?}", code);
         let mut revm = EVM::new(code);
-        println!("{:?}", revm.stack.size());
+        println!("Size:{:?}", revm.stack.size());
         evm::EVM::execute(&mut revm);
-        println!("{:?}", revm.stack.size());
+        println!("Size:{:?}", revm.stack.size());
+        println!("Peaked value{:?}", revm.stack.peak());
+        println!("Gas used:{}", revm.gas_used);
     }
 }

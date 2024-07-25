@@ -13,8 +13,8 @@ impl Stack {
     pub fn push(&mut self, value: U256) {
         self.data.push(value)
     }
-    pub fn pop(&mut self) {
-        self.data.pop();
+    pub fn pop(&mut self) -> Option<U256> {
+        self.data.pop()
     }
     pub fn size(&mut self) -> usize {
         self.data.len()
@@ -25,6 +25,13 @@ impl Stack {
         if size > i {
             self.data[size - i - 1] = value;
             Ok(())
+        } else {
+            Err(error::EvmError::StackUnderflow)
+        }
+    }
+    pub fn peak(&self) -> Result<U256, error::EvmError> {
+        if let Some(&top) = self.data.get(0) {
+            Ok(top)
         } else {
             Err(error::EvmError::StackUnderflow)
         }
